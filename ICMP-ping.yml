@@ -1,0 +1,14 @@
+---
+# usage: ansible-playbook -vvD SSH-ping.yml
+
+- hosts: all
+  #become: yes
+  gather_facts: no # no SSH connection to gather facts
+
+  tasks:
+    - name: ping host
+      local_action: command /bin/ping -c 1 {{ inventory_hostname }}
+    
+    # preview module "net_ping"
+    # https://docs.ansible.com/ansible/2.4/net_ping_module.html
+

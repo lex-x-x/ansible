@@ -1,0 +1,13 @@
+---
+# ansible-playbook -vvD hpraid.yml
+# ansible-playbook -vvD -l <inventory group> hpraid.yml
+# ansible-playbook -vvD -l virtualbox hpraid.yml
+
+- hosts: all
+  become: yes
+
+  roles:
+    - int_repo
+    - { role: nagios_plugins_hpraid, when: hp is defined }
+
+    

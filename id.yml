@@ -1,0 +1,9 @@
+# vi: ft=ansible
+
+---
+- hosts: all
+  #become: yes  # uncomment to test SUDO capabilities
+
+  tasks:
+    - name: run id command
+      command: id

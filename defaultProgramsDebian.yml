@@ -1,0 +1,28 @@
+---
+ - hosts: all
+   sudo: yes
+
+   tasks:
+    - name: Update cache
+      apt: update_cache=yes
+      when: ansible_os_family == "Debian"
+
+    - name: Install HTOP
+      apt: name=htop 
+      when: ansible_os_family == "Debian"
+
+    - name: Install MC
+      apt: name=mc
+      when: ansible_os_family == "Debian"
+    
+    - name: Install MTR
+      apt: name=mtr
+      when: ansible_os_family == "Debian"
+
+    - name: Install Nload
+      apt: name=nload
+      when: ansible_os_family == "Debian"
+
+    - name: Install wget
+      apt: name=wget
+      when: ansible_os_family == "Debian"

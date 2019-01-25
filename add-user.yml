@@ -1,0 +1,47 @@
+# vi: ft=ansible
+
+---
+# usage: ansible-playbook -l test_hst add-user.yml --extra-vars "usrname=testusr2"
+- hosts: all
+  become: yes
+
+  vars:
+    # password hash
+    # hash with python:
+    # python -c 'import crypt; print crypt.crypt("This is my Password", "$1$SomeSalt$")'
+    # python -c 'import crypt; print crypt.crypt("This is my Password", "$6$SomeSalt$")'
+    # or
+    # hash with openssl:
+    # openssl passwd -salt <salt> -1 <password_in_plaintext>
+    # Usage: openssl passwd [options] [passwords]
+    # where options are
+    # -crypt             standard Unix password algorithm (default)
+    # -1                 MD5-based password algorithm
+    # -apr1              MD5-based password algorithm, Apache variant
+    # -salt <string>     use provided salt
+    # -in file           read passwords from file
+    # -stdin             read passwords from stdin
+    # -noverify          never verify when reading password from terminal
+    # -quiet             no warnings
+    # -table             format output as table
+    # -reverse           switch table columns
+    password_hash: some_hash
+    usrname: lex
+    key: "ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAIEAs9caguGRotS5NS9p+CRFpnVNYPW+Ue+K7u4vwThhIWiLMpFDpK+4x6aXzxfJSrjDZRV2AeRWJCPGGcrIhu6PPRKmp4J1QR0yLOsIMgpR/5vmMpBuOg7A/gnze2UHTwpsdkDiTkiUo7qrqmQfZqZOO0VUcqFXZAFexi4ByGZPJR8="
+
+  tasks:
+    - name: Create remote user {{ usrname }}
+      user: 
+        name: "{{ usrname }}"
+        shell: /bin/bash 
+
+    - name: Set password for remote user {{ usrname }}
+      user: 
+        name: "{{ usrname }}"
+        password: "{{ password_hash }}"
+        update_password: always
+
+    - name: Add ssh pubkey to remote user {{ usrname }}
+      authorized_key: 
+        user: "{{ usrname }}"
+        key: "{{ key }}"

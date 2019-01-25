@@ -1,0 +1,46 @@
+---
+ - name: Install SmartMonTool
+   apt: name=smartmontools
+   when: ansible_os_family == "Debian"
+   register: install_smartmontool
+   notify:
+    - zabbix-agent restart
+
+ - name: Userparameter for HDD/MD monitoring
+   when: install_smartmontool | success
+   register: copy_config
+   template: src=userparameter_hdd.j2 dest={{ zbx_include_dir }}/userparameter_hdd.conf owner=zabbix group=zabbix mode=0640
+   notify:
+    - zabbix-agent restart
+
+
+ - name: Copy bin check_smart.sh
+   when: copy_config | success
+   copy: src=check_smart.sh dest={{ zbx_bin_dir }}/check_smart.sh owner=root group=root mode=0755
+   register: copy_hdd_bin
+   notify:
+    - zabbix-agent restart
+
+ - name: Copy bin check_array.sh
+   when: copy_config | success
+   copy: src=check_array.sh dest={{ zbx_bin_dir }}/check_array.sh owner=root group=root mode=0755
+   register: copy_hdd_bin
+   notify:
+    - zabbix-agent restart
+
+
+ - name: Copy bin get_arrays.sh
+   when: copy_config | success
+   copy: src=get_arrays.sh dest={{ zbx_bin_dir }}/get_arrays.sh owner=root group=root mode=0755
+   register: copy_hdd_bin
+   notify:
+    - zabbix-agent restart
+
+
+ - name: Copy bin get_hdds.sh
+   when: copy_config | success
+   copy: src=get_hdds.sh dest={{ zbx_bin_dir }}/get_hdds.sh owner=root group=root mode=0755
+   register: copy_hdd_bin
+   notify:
+    - zabbix-agent restart
+

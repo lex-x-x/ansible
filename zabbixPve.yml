@@ -1,0 +1,39 @@
+###################################
+#
+# Configuration for monitoring the server through using zabbix.
+#
+###################################
+---
+#
+# All PVE servers
+#
+ - name: All pve
+   hosts: all
+   sudo: yes
+
+   roles:
+    - zbx_smart
+    - zbx_hdd
+    - zbx_vzubc
+    - zbx_vzvesta
+
+#
+# For server PRODUCTION VPS for client.
+# Not DEDICATED server, only for VPS (dom 0)
+#
+# - name: production VPS 
+#   hosts: pveVPSProduction
+#   sudo: yes
+#   roles:
+#    - zbx_vzubc
+#    - zbx_vzvesta
+
+#
+# For server PRODUCTION VPS for Dedicated.
+#
+# - name: production VPS Dedicated 
+#   hosts: pveDedicatedProduction
+#   sudo: yes
+#   roles:
+#    - zbx_vzubc
+#    - zbx_vzvesta

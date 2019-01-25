@@ -1,0 +1,7 @@
+#
+# Warning auto generate from Ansible
+# Don't CHANGE MANUAL, role "zbxmain"
+#
+Defaults:zabbix !requiretty
+Cmnd_Alias ZABBIX_CMD = /etc/zabbix/bin/*
+zabbix   ALL = (root)        NOPASSWD: ZABBIX_CMD

@@ -1,0 +1,6 @@
+---
+- name: Install hpssacli package
+  yum: state=present name=hpssacli
+
+- name: nagios - deploy check_hp_raid plugin
+  copy: src=check_hp_raid.py dest=/usr/lib64/nagios/plugins/check_hp_raid

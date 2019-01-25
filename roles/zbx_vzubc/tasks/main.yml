@@ -1,0 +1,23 @@
+---
+ - name: Userparameter for VZUBC
+   register: copy_config
+   template: src=userparameter_vzubc.conf dest={{ zbx_include_dir }}/ owner=zabbix group=zabbix mode=0640
+   notify:
+    - zabbix-agent restart
+
+ - name: Copy bin get_cts.sh
+   copy: src=get_cts.sh dest={{ zbx_bin_dir }}/get_cts.sh owner=root group=root mode=0755
+   register: copy_cts_bin
+
+ - name: Install Curl
+   apt: name=curl update_cache=yes
+   register: curl_installed
+
+ - name: Copy bin get_ubc.sh
+   copy: src=get_ubc.sh dest={{ zbx_bin_dir }}/get_ubc.sh owner=root group=root mode=0755
+   when: curl_installed | success
+   register: copy_ubc_bin
+
+ - name: Copy bin check_svc.sh
+   copy: src=check_svc.sh dest={{ zbx_bin_dir }}/check_svc.sh owner=root group=root mode=0755
+   register: copy_check_svc

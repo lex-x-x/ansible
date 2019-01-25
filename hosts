@@ -1,0 +1,3 @@
+[virtualbox]
+#CentOS7.4.1708.test.local ansible_host=192.168.56.101 lingvo_dev=1
+CentOS7-3-1611.test.local ansible_host=192.168.56.102 lingvo_dev=1

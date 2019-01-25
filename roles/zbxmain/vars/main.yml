@@ -1,0 +1,8 @@
+---
+ hostname: 
+  - "{{ ansible_hostname }}"
+ zbx_config: "/etc/zabbix/zabbix_agentd.conf"
+ zbx_server: "172.16.1.3"
+ zbx_include_dir: "/etc/zabbix/zabbix_agentd.d"
+ zbx_bin_dir: "/etc/zabbix/bin"
+ sudo_dird: "/etc/sudoers.d"

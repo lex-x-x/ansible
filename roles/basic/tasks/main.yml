@@ -1,0 +1,10 @@
+---
+
+- include_tasks: basic_redhat.yml
+  when: ansible_facts['distribution']|lower == 'redhat'
+
+- include_tasks: basic_redhat.yml
+  when: ansible_facts['distribution']|lower == 'centos'
+
+- include_tasks: basic_altlinux.yml
+  when: ansible_facts['distribution']|lower == 'altlinux'

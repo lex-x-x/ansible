@@ -1,0 +1,18 @@
+# vi: ft=ansible
+
+# needs user and password in inventory
+# 'zabbix-01  ansible_host=10.xx.xx.100 ansible_user=root ansible_ssh_pass=<put_your_password_here>'
+
+# run
+# su - <ansible_user>
+# cd <ansible_folder>
+# ansible-playbook -vvD -l <group> add-my-pubkey.yml
+---
+- hosts: all
+  #become: yes
+
+  tasks:
+    - name: Add my SSH pubkey to current remote user
+      authorized_key: 
+        user: "{{ ansible_user }}"
+        key: "ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAIEAs9caguGRotS5NS9p+CRFpnVNYPW+Ue+K7u4vwThhIWiLMpFDpK+4x6aXzxfJSrjDZRV2AeRWJCPGGcrIhu6PPRKmp4J1QR0yLOsIMgpR/5vmMpBuOg7A/gnze2UHTwpsdkDiTkiUo7qrqmQfZqZOO0VUcqFXZAFexi4ByGZPJR8="

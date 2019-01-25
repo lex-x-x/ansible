@@ -1,0 +1,17 @@
+###################################
+#
+# Configuration for monitoring the server through using zabbix.
+#
+###################################
+---
+#
+# All PVE servers
+#
+ - name: All Linux
+   hosts: dns
+   sudo: yes
+
+   roles:
+    - zbx_smart
+    - zbx_hdd
+

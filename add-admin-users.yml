@@ -1,0 +1,40 @@
+# vi: ft=ansible
+
+# first ansible run / run with root by password
+# cd <ansible_folder>; ansible-playbook -vvD -l <hostname_from_inventory> -u root users.yml -k
+# 'enter_root_password'
+# 
+# ansible-playbook automated run
+# su - <ansible_user>
+# cd <ansible_folder>; ansible-playbook -vvD -u ansible <some>.yml
+---
+- hosts: all
+  become: yes
+
+  tasks:
+    - name: Create remote admin user "lex"
+      user: 
+        name: lex
+        shell: /bin/bash 
+        comment: "Aleksey"
+
+    - name: Add SSH pubkey to remote admin user "lex"
+      authorized_key: 
+        user: lex
+        key: "ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAIEAs9caguGRotS5NS9p+CRFpnVNYPW+Ue+K7u4vwThhIWiLMpFDpK+4x6aXzxfJSrjDZRV2AeRWJCPGGcrIhu6PPRKmp4J1QR0yLOsIMgpR/5vmMpBuOg7A/gnze2UHTwpsdkDiTkiUo7qrqmQfZqZOO0VUcqFXZAFexi4ByGZPJR8="
+
+    - name: Sudoers - no tty for admin user "lex" 
+      lineinfile: 
+        path: /etc/sudoers
+        line: "Defaults:lex  !requiretty" 
+        regexp: '^Defaults:lex '
+        insertafter: "# Defaults specification"
+        validate: 'visudo -cf %s'
+
+    - name: Sudoers - no passwd for admin user "lex"
+      lineinfile: 
+        path: /etc/sudoers.d/lex
+        line: "lex ALL=(ALL)       NOPASSWD: ALL"
+        regexp: '^lex ALL'
+        validate: 'visudo -cf %s'
+        create: yes 

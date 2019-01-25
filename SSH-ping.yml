@@ -1,0 +1,10 @@
+---
+# module "ping" - SSH Ping
+
+- hosts: all
+  become: yes
+
+  tasks:
+    - name: test connection
+      ping:
+

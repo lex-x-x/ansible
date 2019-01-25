@@ -1,0 +1,8 @@
+---
+# https://docs.ansible.com/ansible/yum_repository_module.html
+- name: Install internal repo
+  yum_repository: 
+    name: hp_raid
+    description: HP RAID tools repo
+    baseurl: http://puppet.wiw.ru/hr_raid_repo
+    gpgcheck: no

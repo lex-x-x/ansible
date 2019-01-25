@@ -1,0 +1,3 @@
+---
+ zbx_include_dir: "/etc/zabbix/zabbix_agentd.d"
+ zbx_bin_dir: "/etc/zabbix/bin"

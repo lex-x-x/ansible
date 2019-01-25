@@ -1,0 +1,24 @@
+---
+ - name: Install SmartMonTool
+   apt: name=smartmontools
+   when: ansible_os_family == "Debian"
+   register: install_smartmontool
+   notify:
+    - zabbix-agent restart
+
+
+ - name: Userparameter for SMART
+   when: install_smartmontool | success
+   register: copy_config
+   template: src=userparameter_smart.conf dest={{ zbx_include_dir }}/ owner=zabbix group=zabbix mode=0640
+   notify:
+    - zabbix-agent restart
+
+
+ - name: Copy bin smart-stats.sh
+   when: copy_config | success
+   copy: src=smart-stats.sh dest={{ zbx_bin_dir }}/smart-stats.sh owner=root group=root mode=0755
+   register: copy_smart_bin
+   notify:
+    - zabbix-agent restart
+

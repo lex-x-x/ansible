@@ -1,0 +1,9 @@
+---
+# ansible-playbook -vvD whoami.yml
+# ansible-playbook -vvD -l <inventory group> whoami.yml
+
+- hosts: all
+  become: yes
+
+  tasks:
+    - shell: whoami

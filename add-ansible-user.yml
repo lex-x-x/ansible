@@ -1,0 +1,54 @@
+# vi: ft=ansible
+
+# first ansible run / run with root by password
+# cd <ansible_folder>; ansible-playbook -vvD -l <hostname_from_inventory> -u root ansible.yml -k
+# 'enter_root_password'
+# 
+# ansible-playbook automated run
+# su - <ansible_user>
+# cd <ansible_folder>
+# ansible-playbook -vvD -u ansible <some>.yml
+---
+- hosts: all
+  become: yes
+
+  tasks: 
+    - name: Create remote ansible user
+      user: 
+        name: ansible 
+        shell: /bin/bash 
+        home: /home/ansible
+        comment: "Ansible user"
+
+    #- name: Set password for ansible user
+    - name: Remove password for ansible user
+      user: 
+        name: ansible
+        password: ""
+        update_password: always
+
+    #- name: Add ansible user ssh pubkey to remote ansible user
+    #  authorized_key: 
+    #    user: ansible 
+    #    key: "{{ lookup('file', 'id_rsa.pub.ansible') }}"
+    
+    - name: Add ansible user ssh pubkey to remote ansible user
+      authorized_key: 
+        user: ansible 
+        key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC3wmDJ1wnnpp9uk2KB5pKsKnjnj4EZMOD+fv3NuXbyzqWT4dMFwYwyTsQmLuYyFSYG/cJ5ISSbIjmDY9/kQBsyfdB+WXMlBdak2w9fIHSUkCvv9ivVfHLeVCMDMmCvbAyYHkQ3vdwmRJmNkqrbW+Ut0GOx6KhN6mmZh1+GkEgWZ2ombP7GpSUVibaM5TWopw2NjKu2/9iAEkxOnL82YzkpJT2asZnC9b9KBfnDONGfOIOP6QkerFd4luCcQ9wdm4PCCXjDAS4w20Yy8fA/Cuhf84Q8fpobazgPpiIYXxpYTcjUiFlo1UL/wjEsNQ0YGVwaYdx5fsXtY1DqDVkG5Ld9 ansible"
+    
+    - name: Sudoers - add Ansible user defaults to no tty
+      lineinfile: 
+        path: /etc/sudoers
+        line: "Defaults:ansible  !requiretty" 
+        regexp: '^Defaults:ansible '
+        insertafter: "# Defaults specification"
+        validate: 'visudo -cf %s'
+
+    - name: Sudoers - Ansible user no passwd
+      lineinfile: 
+        path: /etc/sudoers.d/ansible
+        line: "ansible ALL=(ALL)       NOPASSWD: ALL" 
+        regexp: '^ansible ALL'
+        validate: 'visudo -cf %s'
+        create: yes 
